@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import useLocalProgress from "./hooks/userlocalprogress"; // ← طابق اسم الملف عندك
+import useLocalProgress from "./hooks/userLocalProgress"; // ← طابق اسم الملف عندك
 
 // ====== بيانات اللعبة ======
 const CATEGORIES = [
