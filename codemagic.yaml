@@ -11,13 +11,20 @@ workflows:
         script: npm run build
       - name: Ensure Android platform exists
         script: |
+          # ضيف مجلد bin المحلي على الـ PATH
+          export PATH="$PWD/node_modules/.bin:$PATH"
+
+          # تأكيد توفّر CLI
+          npx --yes @capacitor/cli --version
+
+          # أنشئ منصة أندرويد إذا غير موجودة
           if [ -d android ]; then
             echo "Android platform already exists"
           else
-            npx cap add android
+            npx --yes @capacitor/cli cap add android
           fi
       - name: Sync web to Android
-        script: npx cap sync android
+        script: npx --yes @capacitor/cli cap sync android
       - name: Make Gradle executable
         script: cd android && chmod +x ./gradlew
       - name: Build APK (release)
