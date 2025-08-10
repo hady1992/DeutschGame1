@@ -1,24 +1,23 @@
+// src/hooks/useLocalProgress.js
 import { useState, useEffect } from "react";
 
-// حفظ واسترجاع التقدم من Local Storage
-export default function useLocalProgress(key, initialValue) {
+export default function useLocalProgress(
+  initialValue = { unlocked: 0, stars: 0, completed: {} },
+  key = "woerterreise_progress_v1"
+) {
   const [value, setValue] = useState(() => {
     try {
-      const storedValue = localStorage.getItem(key);
-      return storedValue ? JSON.parse(storedValue) : initialValue;
-    } catch (error) {
-      console.error("Error reading from localStorage", error);
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : initialValue;
+    } catch {
       return initialValue;
     }
   });
 
-  // تحديث القيمة في Local Storage عند التغيير
   useEffect(() => {
     try {
       localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error("Error saving to localStorage", error);
-    }
+    } catch {}
   }, [key, value]);
 
   return [value, setValue];
