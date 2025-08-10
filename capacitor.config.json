@@ -1,0 +1,9 @@
+{
+  "appId": "com.deutsch.game",
+  "appName": "DeutschGame",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "http"
+  }
+}
