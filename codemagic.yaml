@@ -11,11 +11,15 @@ workflows:
         script: npm run build
       - name: Ensure Android platform exists
         script: |
-          npx cap ls | grep android || npx cap add android
+          if [ -d android ]; then
+            echo "Android platform already exists"
+          else
+            npx cap add android
+          fi
       - name: Sync web to Android
         script: npx cap sync android
       - name: Make Gradle executable
-        script: cd android && chmod +x gradlew
+        script: cd android && chmod +x ./gradlew
       - name: Build APK (release)
         script: cd android && ./gradlew assembleRelease
     artifacts:
