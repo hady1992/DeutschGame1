@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import useLocalProgress from "./hooks/useLocalProgress";
+import useLocalProgress from "./hooks/userlocalprogress"; // ← طابق اسم الملف عندك
 
 // ====== بيانات اللعبة ======
 const CATEGORIES = [
@@ -235,7 +235,12 @@ function ListenMode({ words, onComplete }) {
 
 // ====== التطبيق الرئيسي ======
 export default function App() {
-  const [progress, setProgress] = useLocalProgress({ unlocked: 0, stars: 0, completed: {} });
+  // ← مرّر المفتاح والقيمة الابتدائية للهوك
+  const [progress, setProgress] = useLocalProgress(
+    "woerterreise_progress_v1",
+    { unlocked: 0, stars: 0, completed: {} }
+  );
+
   const [station, setStation] = useState(0);
   const [mode, setMode] = useState(MODES.LEARN);
 
