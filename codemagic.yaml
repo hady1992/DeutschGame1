@@ -6,7 +6,7 @@ workflows:
       java: 17
     scripts:
       - name: Install Node deps
-        script: npm ci
+        script: npm install
       - name: Build web (Vite)
         script: npm run build
       - name: Ensure Android platform exists
