@@ -1,33 +1,32 @@
 workflows:
-  build_release_apk:
-    name: Build Release APK
+  build_apk:
+    name: Android Debug APK
+    max_build_duration: 60
     environment:
       node: 18
       java: 17
+      vars:
+        ANDROID_PROJECT_DIR: "android"
+
     scripts:
       - name: Install Node deps
         script: npm install
+
       - name: Build web (Vite)
         script: npm run build
+
       - name: Ensure Android platform exists
         script: |
-          # ضيف مجلد bin المحلي على الـ PATH
-          export PATH="$PWD/node_modules/.bin:$PATH"
+          npx --yes @capacitor/cli cap ls | grep android || npx --yes @capacitor/cli cap add android
 
-          # تأكيد توفّر CLI
-          npx --yes @capacitor/cli --version
-
-          # أنشئ منصة أندرويد إذا غير موجودة
-          if [ -d android ]; then
-            echo "Android platform already exists"
-          else
-            npx --yes @capacitor/cli cap add android
-          fi
       - name: Sync web to Android
         script: npx --yes @capacitor/cli cap sync android
+
       - name: Make Gradle executable
-        script: cd android && chmod +x ./gradlew
-      - name: Build APK (release)
-        script: cd android && ./gradlew assembleRelease
+        script: cd android && chmod +x gradlew
+
+      - name: Build APK (debug)
+        script: cd android && ./gradlew assembleDebug
+
     artifacts:
-      - android/app/build/outputs/apk/release/*.apk
+      - android/app/build/outputs/apk/debug/*.apk
