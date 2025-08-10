@@ -1,32 +1,23 @@
 workflows:
-  build_apk:
-    name: Android Debug APK
-    max_build_duration: 60
+  build_release_apk:
+    name: Build Release APK
     environment:
       node: 18
       java: 17
-      vars:
-        ANDROID_PROJECT_DIR: "android"
-
     scripts:
       - name: Install Node deps
-        script: npm install
-
+        script: |
+          npm install
+          npm install @capacitor/cli --save-dev
       - name: Build web (Vite)
         script: npm run build
-
       - name: Ensure Android platform exists
-        script: |
-          npx --yes @capacitor/cli cap ls | grep android || npx --yes @capacitor/cli cap add android
-
+        script: npx cap ls | grep android || npx cap add android
       - name: Sync web to Android
-        script: npx --yes @capacitor/cli cap sync android
-
+        script: npx cap sync android
       - name: Make Gradle executable
         script: cd android && chmod +x gradlew
-
-      - name: Build APK (debug)
-        script: cd android && ./gradlew assembleDebug
-
+      - name: Build APK (release)
+        script: cd android && ./gradlew assembleRelease
     artifacts:
-      - android/app/build/outputs/apk/debug/*.apk
+      - android/app/build/outputs/apk/release/*.apk
